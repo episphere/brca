@@ -32,11 +32,49 @@ brcaVar = new function(){
         }
 
     }
+    this.df=null // dataframe
+    this.getDF= async ()=>{ // get data and assemble dataframe while going easy on memeory
+        if(!that.df){
+            let tsv = (await (await fetch('variants.tsv')).text())
+            let tsvArray = tsv.split('\n').map(x=>x.split('\t'))
+            that.df = {}
+            tsvArray[0].forEach((k,i)=>{
+                that.df[k]=tsvArray.slice(1).map(r=>r[i])
+                //debugger
+            })
+        }
+        return that.df // to actually return it use await, i.e. df=await brcaVar.getDF()
+    }
 }
 
-// style
+// UI, applicable
+
 if(typeof(window)=='object'){ 
-        window.onload=()=>{
-        document.body.style.backgroundColor="silver"
+    window.onload=async ()=>{
+        //document.body.style.backgroundColor="silver"
+        var div = document.getElementById('brcaExchangeDiv')
+        if(div){ // assemble UI
+            // get the data as an data frame (df)
+            notice={
+                start:function(txt){
+                    msg.textContent=txt
+                    msg.style.color=catIcon.style.color='maroon'
+                },
+                end:function(txt){
+                    msg.textContent=txt
+                    msg.style.color=catIcon.style.color='green'
+                    setTimeout(_=>{
+                        msg.textContent=''
+                        msg.style.color=catIcon.style.color='blue'
+                    },2000)
+                }
+            }
+            notice.start('loading data ...')
+            await brcaVar.getDF() // stores it at brcaVar.df
+            notice.end(`loaded ${brcaVar.df['id'].length} reccords with ${Object.keys(brcaVar.df).length} parameters`)
+
+            //debugger
+
+        }
     }
 }
