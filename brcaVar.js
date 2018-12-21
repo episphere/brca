@@ -56,9 +56,13 @@ brcaVar = new function(){
         })
         return u
     }
+    this.adf={} //analytics data frame 
+    this.parseDF=()=>{ // cleans dataframe at this.df
+        that.adf.id=that.df.id
+    }
 }
 
-// UI, executed only when called from the App
+// UI from hereon, executed only when called from the App:
 
 if(typeof(window)=='object'){ 
     window.onload=async ()=>{
