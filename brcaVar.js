@@ -59,6 +59,7 @@ brcaVar = new function(){
     this.adf={} //analytics data frame 
     this.parseDF=()=>{ // cleans dataframe at this.df
         that.adf.id=that.df.id
+        that.adf.Gene_Symbol=that.df.Gene_Symbol
     }
 }
 
