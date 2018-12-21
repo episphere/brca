@@ -45,9 +45,20 @@ brcaVar = new function(){
         }
         return that.df // to actually return it use await, i.e. df=await brcaVar.getDF()
     }
+    this.unique=(arr)=>{
+        var u = {}
+        arr.forEach(v=>{
+            if(typeof(v)!=='undefined'){
+                v=v.split(',')[0]
+                if(!u[v]){u[v]=0}
+                u[v]+=1    
+            }
+        })
+        return u
+    }
 }
 
-// UI, applicable
+// UI, executed only when called from the App
 
 if(typeof(window)=='object'){ 
     window.onload=async ()=>{
@@ -55,7 +66,7 @@ if(typeof(window)=='object'){
         var div = document.getElementById('brcaExchangeDiv')
         if(div){ // assemble UI
             // get the data as an data frame (df)
-            notice={
+            var notice={
                 start:function(txt){
                     msg.textContent=txt
                     msg.style.color=catIcon.style.color='maroon'
@@ -72,9 +83,27 @@ if(typeof(window)=='object'){
             notice.start('loading data ...')
             await brcaVar.getDF() // stores it at brcaVar.df
             notice.end(`loaded ${brcaVar.df['id'].length} reccords with ${Object.keys(brcaVar.df).length} parameters`)
-
-            //debugger
-
+            
+            // Create graphics
+            var h = '<h4>Unique observations</h4>'
+            h += '<select id="uniqueSelect" style="vertical-align:top"><option>Select parameter</option></select> <pre id="uniqueArea" style="width:500;height:150;background-color:black;color:lime;font-size:small"></pre>'
+            divPlotTabulator.innerHTML=h
+            Object.keys(brcaVar.df).forEach(k=>{
+                var op = document.createElement('option')
+                op.value=op.text=k
+                uniqueSelect.appendChild(op)
+            })
+            uniqueSelect.onchange=()=>{
+                var k = uniqueSelect.selectedOptions[0].label
+                // count unique onto textarea
+                var u = brcaVar.unique(brcaVar.df[k])
+                var ku = Object.keys(u).sort()
+                var h =''
+                ku.forEach(ki=>{
+                    h += `<li><span style="color:orange">${ki}</span> <span style="color:cyan">:</span> ${u[ki]}</li>`
+                })
+                uniqueArea.innerHTML=h
+            }
         }
     }
 }
