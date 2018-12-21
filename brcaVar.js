@@ -1,5 +1,5 @@
 console.log('brca.js loaded')
-
+// written to be called equally well as script from browser or required in node
 
 brcaVar = new function(){
     const that = this
@@ -49,7 +49,7 @@ brcaVar = new function(){
         var u = {}
         arr.forEach(v=>{
             if(typeof(v)!=='undefined'){
-                v=v.split(',')[0]
+                //v=v.split(',')[0]
                 if(!u[v]){u[v]=0}
                 u[v]+=1    
             }

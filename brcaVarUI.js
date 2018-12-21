@@ -22,8 +22,9 @@ brcaVarUI = async(div)=>{
         notice.end(`loaded ${brcaVar.df['id'].length} reccords with ${Object.keys(brcaVar.df).length} parameters`)
 
         // Create graphics
-        var h = '<h4>Unique observations <span style="font-size:small">(check for debugging)</span></h4>'
+        var h = '<h4>Unique observations <span style="font-size:small">(can be used to check data parsing)</span></h4>'
         h += '<select id="uniqueSelect" style="vertical-align:top"><option>Select parameter</option></select> <pre id="uniqueArea" style="width:500;height:150;background-color:black;color:lime;font-size:small"></pre>'
+        h += '<hr> general purpose analytics comming next ..'
         divPlotTabulator.innerHTML=h
         Object.keys(brcaVar.df).forEach(k=>{
             var op = document.createElement('option')
