@@ -58,8 +58,45 @@ brcaVar = new function(){
     }
     this.adf={} //analytics data frame 
     this.parseDF=()=>{ // cleans dataframe at this.df
-        that.adf.id=that.df.id
-        that.adf.Gene_Symbol=that.df.Gene_Symbol
+        var n = that.df.id.length-1 // remove last row, incomplete
+        that.adf.id=that.df.id.slice(0,n)
+        that.adf.Gene_Symbol=that.df.Gene_Symbol.slice(0,n)
+        that.adf.Source=that.df.Source.slice(0,n)
+        that.adf.Clinical_significance_ENIGMA=that.df.Clinical_significance_ENIGMA.slice(0,n)
+        that.adf.Clinical_Significance_ClinVar=that.df.Clinical_Significance_ClinVar.slice(0,n)
+           .map(x=>{
+               if(x){
+                   return x.split(',')[0] // only first label
+               }else{
+                   return '-'
+               }
+            }) 
+        // count database sources
+        that.dbs={}
+        that.adf.Source.forEach(str=>{
+            if(str){
+                str.split(',').forEach(db=>{
+                    if(!that.dbs[db]){that.dbs[db]=0}
+                    that.dbs[db]+=1
+                })
+            }  
+        })
+        // tabulate indexes to databases
+        that.dbNames=Object.keys(brcaVar.dbs).sort()
+        that.dbNames.forEach
+
+        // Workflow
+        that.workflow=[]
+        that.workflowFlags=[]
+
+        return that.dbs
+    }
+    this.uniqueLabels=(arr)=>{
+        var u = {}
+        arr.forEach(k=>{
+            u[k]=true
+        })
+        return Object.keys(u)
     }
 }
 
