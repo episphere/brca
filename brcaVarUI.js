@@ -106,6 +106,9 @@ brcaVarUI.tabulate=function(ki,kj){
         td.innerHTML=`${u}`
         td.style.color="green"
         td.style.textAlign="center"
+        td.style.cursor="hand"
+        td.onmouseover=brcaVarUI.overColumnLabel
+        td.onmouseleave=brcaVarUI.leaveColumnLabel
     })
     var cts = [] 
     Ui.forEach((ui,i)=>{ // count first
@@ -120,6 +123,9 @@ brcaVarUI.tabulate=function(ki,kj){
     Ui.forEach((ui,i)=>{ // then tabulate 
         var tr = document.createElement('tr');ctb.appendChild(tr)
         var td = document.createElement('td');tr.appendChild(td) // ith label
+        td.onmouseover=brcaVarUI.overRowLabel
+        td.onmouseleave=brcaVarUI.leaveRowLabel
+        td.style.cursor="hand"
         td.innerHTML=`${ui}`
         td.style.color="navy"
         Uj.forEach((ui,j)=>{
@@ -171,4 +177,38 @@ brcaVarUI.leaveCellCount=function(evt){
     this.parentElement.parentElement.rows[0].cells[j].style.backgroundColor=""
     this.parentElement.cells[0].style.backgroundColor=""
     this.style.border=""
+}
+brcaVarUI.overRowLabel=function(evt){
+    var i = this.parentElement.rowIndex
+    this.parentElement.style.border="solid"
+    //debugger
+}
+brcaVarUI.leaveRowLabel=function(evt){
+    var i = this.parentElement.rowIndex
+    this.parentElement.style.border=""
+    //debugger
+}
+brcaVarUI.overColumnLabel=function(evt){
+    var j = this.cellIndex
+    var n = this.parentElement.parentElement.rows.length
+    this.style.borderTop="solid"
+    var td
+    for (var i=0;i<n;i++){
+        td = this.parentElement.parentElement.rows[i].cells[j]
+        td.style.borderLeft=td.style.borderRight="solid"
+    }
+    td.style.borderBottom="solid"
+    
+    //this.parentElement.style.border="solid"
+    //debugger
+}
+brcaVarUI.leaveColumnLabel=function(evt){
+    var j = this.cellIndex
+    var n = this.parentElement.parentElement.rows.length
+    for (var i=0;i<n;i++){
+        let td = this.parentElement.parentElement.rows[i].cells[j]
+        td.style.border=""
+    }
+    //this.parentElement.style.border="solid"
+    //debugger
 }
