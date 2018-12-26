@@ -181,17 +181,20 @@ brcaVarUI.leaveCellCount=function(evt){
 brcaVarUI.overRowLabel=function(evt){
     var i = this.parentElement.rowIndex
     this.parentElement.style.border="solid"
+    this.style.backgroundColor="yellow"
     //debugger
 }
 brcaVarUI.leaveRowLabel=function(evt){
     var i = this.parentElement.rowIndex
     this.parentElement.style.border=""
+    this.style.backgroundColor=""
     //debugger
 }
 brcaVarUI.overColumnLabel=function(evt){
     var j = this.cellIndex
     var n = this.parentElement.parentElement.rows.length
     this.style.borderTop="solid"
+    this.style.backgroundColor="yellow"
     var td
     for (var i=0;i<n;i++){
         td = this.parentElement.parentElement.rows[i].cells[j]
@@ -209,6 +212,7 @@ brcaVarUI.leaveColumnLabel=function(evt){
         let td = this.parentElement.parentElement.rows[i].cells[j]
         td.style.border=""
     }
+    this.style.backgroundColor=""
     //this.parentElement.style.border="solid"
     //debugger
 }
