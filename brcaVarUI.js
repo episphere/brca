@@ -103,7 +103,7 @@ brcaVarUI.tabulate=function(ki,kj){
     td00.innerHTML=`<b style="color:navy">${ki}</b>`
     Uj.forEach(u=>{
         var td = document.createElement('td');tr0.appendChild(td)
-        td.innerHTML=`<input type="checkbox" checked=true> ${u}`
+        td.innerHTML=`${u}`
         td.style.color="green"
         td.style.textAlign="center"
     })
@@ -120,12 +120,18 @@ brcaVarUI.tabulate=function(ki,kj){
     Ui.forEach((ui,i)=>{ // then tabulate 
         var tr = document.createElement('tr');ctb.appendChild(tr)
         var td = document.createElement('td');tr.appendChild(td) // ith label
-        td.innerHTML=`<input type="checkbox" checked=true> ${ui}`
+        td.innerHTML=`${ui}`
         td.style.color="navy"
         Uj.forEach((ui,j)=>{
             var td = document.createElement('td');tr.appendChild(td) // ith label
-            td.innerHTML=`${cts[i][j].length} <input type="checkbox" checked=true>`
+            td.innerHTML=`${cts[i][j].length}/<span style="font-size:small">${cts[i][j].length}</span>`
             td.style.textAlign="center"
+            td.style.backgroundColor="silver"
+            td.style.color="blue"
+            td.style.cursor="hand"
+            td.onclick=brcaVarUI.selectCellCount
+            td.onmouseover=brcaVarUI.overCellCount
+            td.onmouseleave=brcaVarUI.leaveCellCount
             //cts[i][j]=[]
         })
     })
@@ -137,4 +143,32 @@ brcaVarUI.tabulate=function(ki,kj){
 
 
     4
+}
+brcaVarUI.selectCellCount=function(evt){
+    if(this.style.backgroundColor=="white"){
+        this.style.backgroundColor="silver"
+        this.style.color="blue"
+    }else{
+        this.style.backgroundColor="white"
+        this.style.color="silver"
+    }
+    
+    //debugger
+}
+
+brcaVarUI.overCellCount=function(evt){
+    var j = this.cellIndex
+    var i = this.parentElement.rowIndex
+    this.parentElement.parentElement.rows[0].cells[j].style.backgroundColor="yellow"
+    this.parentElement.cells[0].style.backgroundColor="yellow"
+    this.style.border="solid"
+    this.style.borderColor="maroon"
+    //debugger
+}
+brcaVarUI.leaveCellCount=function(evt){
+    var j = this.cellIndex
+    var i = this.parentElement.rowIndex
+    this.parentElement.parentElement.rows[0].cells[j].style.backgroundColor=""
+    this.parentElement.cells[0].style.backgroundColor=""
+    this.style.border=""
 }
