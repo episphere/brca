@@ -71,6 +71,8 @@ brcaVar = new function(){
                    return '-'
                }
             }) 
+        that.adf.Allele_Origin_ClinVar=that.df.Allele_Origin_ClinVar
+        that.adf.Allele_Origin_ENIGMA=that.df.Allele_origin_ENIGMA // note case correction in [O]rigin
         // count database sources
         that.dbs={}
         that.adf.Source.forEach(str=>{
@@ -88,6 +90,9 @@ brcaVar = new function(){
         // Workflow
         that.workflow=[]
         that.workflowFlags=[]
+
+        // indexes
+        that.ind=[...Array(that.df.id.length)].map(_=>true)
 
         return that.dbs
     }

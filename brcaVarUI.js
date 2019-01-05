@@ -70,15 +70,16 @@ brcaVarUI = async(div)=>{
         // tabulate ClinVar and ENIGMA significances
         var divWork=document.getElementById('workflowDiv')
         divWork.appendChild(brcaVarUI.tabulate('Clinical_Significance_ClinVar','Clinical_significance_ENIGMA'))
-
-
-
-
+        divWork.appendChild(document.createElement('hr'))
+        divWork.appendChild(brcaVarUI.tabulate('Allele_Origin_ClinVar','Allele_Origin_ENIGMA'))
 
     }else{
         Error(' div not found ')
     }
 }
+
+
+
 brcaVarUI.tabulate=function(ki,kj){
     var Ui = brcaVar.uniqueLabels(brcaVar.adf[ki]).sort()
     var UiInd={};Ui.forEach((k,i)=>{UiInd[k]=i})
@@ -130,7 +131,7 @@ brcaVarUI.tabulate=function(ki,kj){
         td.style.color="navy"
         Uj.forEach((ui,j)=>{
             var td = document.createElement('td');tr.appendChild(td) // ith label
-            td.innerHTML=`${cts[i][j].length}/<span style="font-size:small">${cts[i][j].length}</span>`
+            td.innerHTML=`<span class="sum">${cts[i][j].length}</span>/<span class="total" style="font-size:small">${cts[i][j].length}</span>`
             td.style.textAlign="center"
             td.style.backgroundColor="silver"
             td.style.color="blue"
@@ -138,28 +139,47 @@ brcaVarUI.tabulate=function(ki,kj){
             td.onclick=brcaVarUI.selectCellCount
             td.onmouseover=brcaVarUI.overCellCount
             td.onmouseleave=brcaVarUI.leaveCellCount
-            //cts[i][j]=[]
+            td.classList.add('count')
+            td.varInd=cts[i][j]
+            td.checkedOut=false
         })
     })
-    //var arri = brcaVar.adf[ki]
-    //var arrj = brcaVar.adf[kj]
-
+    brcaVarUI.ind=brcaVar.ind;
     return tb
-
-
-
-    4
 }
 brcaVarUI.selectCellCount=function(evt){
     if(this.style.backgroundColor=="white"){
         this.style.backgroundColor="silver"
         this.style.color="blue"
+        this.checkedOut=false
     }else{
         this.style.backgroundColor="white"
         this.style.color="silver"
+        this.checkedOut=true
     }
-    
+    brcaVarUI.recount(this)
     //debugger
+}
+
+brcaVarUI.recount=function(td){
+    brcaVarUI.ind=[...brcaVar.ind];
+    // falsify checked-out indexes
+    var tds=[...workflowDiv.querySelectorAll('td.count')]
+    tds.forEach(function(td){
+        if(td.checkedOut){
+            td.varInd.forEach(i=>{
+                brcaVarUI.ind[i]=false
+            })
+        }
+    })
+    // recount
+    tds.forEach(td=>{
+        var c=0
+        td.varInd.forEach(i=>{c=c+brcaVarUI.ind[i]})
+        td.querySelector('.sum').textContent=c
+        //debugger
+    })
+    
 }
 
 brcaVarUI.overCellCount=function(evt){
@@ -215,4 +235,12 @@ brcaVarUI.leaveColumnLabel=function(evt){
     this.style.backgroundColor=""
     //this.parentElement.style.border="solid"
     //debugger
+}
+
+brcaVarUI.array2obj=(arr)=>{
+    var y = {}
+    arr.forEach(a=>{
+        y[a]=true
+    })
+    return y
 }
