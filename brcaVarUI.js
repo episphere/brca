@@ -181,7 +181,36 @@ brcaVarUI.recount=function(td){
     tds.forEach(td=>{
         var c=0
         td.varInd.forEach(i=>{c=c+brcaVarUI.ind[i]})
-        td.querySelector('.sum').textContent=c
+        var sumSp = td.querySelector('.sum')
+        if(sumSp.textContent!=c){
+            td.style.border="solid"
+            td.style.borderColor="yellow"
+            setTimeout(_=>{
+                td.style.border=td.style.borderColor=""
+            },3000)
+        }
+        sumSp.textContent=c
+        var totalSp = td.querySelector('.total')
+        var totalNum = parseFloat(totalSp.textContent)
+        // recolor
+        if((td.style.backgroundColor!=="white")&&(c<totalNum)){
+            sumSp.style.color="#b35900" //"#0099ff" 
+            totalSp.style.color="blue"
+        }
+        
+        if(td.style.backgroundColor=="white"){
+            sumSp.style.color="silver" //"#0099ff" 
+            totalSp.style.color="silver"
+        }
+
+        if(td.style.color=="blue"){
+            if(sumSp.style.color=="silver"){
+                sumSp.style.color=td.style.color 
+                totalSp.style.color=td.style.color
+            }else if(c==totalNum){
+                sumSp.style.color=totalSp.style.color=td.style.color
+            }
+        }
         //debugger
     })
     
