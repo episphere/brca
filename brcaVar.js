@@ -71,8 +71,10 @@ brcaVar = new function(){
                    return '-'
                }
             }) 
-        that.adf.Allele_Origin_ClinVar=that.df.Allele_Origin_ClinVar
-        that.adf.Allele_Origin_ENIGMA=that.df.Allele_origin_ENIGMA // note case correction in [O]rigin
+        that.adf.Allele_Origin_ClinVar=that.df.Allele_Origin_ClinVar.slice(0,n)
+        that.adf.Allele_Origin_ENIGMA=that.df.Allele_origin_ENIGMA.slice(0,n) // note case correction in [O]rigin
+        that.adf.Clinical_importance_BIC=that.df.Clinical_importance_BIC.slice(0,n).map(x=>x.split(',')[0])
+        that.adf.Clinical_classification_BIC=that.df.Clinical_classification_BIC.slice(0,n).map(x=>x.split(',')[0])
         // count database sources
         that.dbs={}
         that.adf.Source.forEach(str=>{

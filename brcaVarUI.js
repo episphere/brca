@@ -71,8 +71,13 @@ brcaVarUI = async(div)=>{
         var divWork=document.getElementById('workflowDiv')
         divWork.appendChild(brcaVarUI.tabulate('Clinical_Significance_ClinVar','Clinical_significance_ENIGMA'))
         divWork.appendChild(document.createElement('hr'))
+        divWork.appendChild(brcaVarUI.tabulate('Clinical_classification_BIC','Clinical_importance_BIC'))
+        divWork.appendChild(document.createElement('hr'))
         divWork.appendChild(brcaVarUI.tabulate('Allele_Origin_ClinVar','Allele_Origin_ENIGMA'))
-
+        divWork.appendChild(document.createElement('hr'))
+        divWork.appendChild(brcaVarUI.tabulate('Source','Gene_Symbol'))
+        divWork.appendChild(document.createElement('hr'))
+        
     }else{
         Error(' div not found ')
     }
