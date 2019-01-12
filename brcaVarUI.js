@@ -187,7 +187,7 @@ brcaVarUI.recount=function(td){
             td.style.borderColor="yellow"
             setTimeout(_=>{
                 td.style.border=td.style.borderColor=""
-            },3000)
+            },2000)
         }
         sumSp.textContent=c
         var totalSp = td.querySelector('.total')
