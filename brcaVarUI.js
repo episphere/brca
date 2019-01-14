@@ -92,18 +92,24 @@ brcaVarUI.tabulate=function(ki,kj){
     var UjInd={};Uj.forEach((k,j)=>{UjInd[k]=j})
     // enveloping table
     var tb = document.createElement('table')
+    tb.traces=[] // <-- plotly traces
     var tr1 = document.createElement('tr');tb.appendChild(tr1)
     var td11 = document.createElement('td');tr1.appendChild(td11)
     var td12 = document.createElement('td');tr1.appendChild(td12)
     var tr2 = document.createElement('tr');tb.appendChild(tr2)
     var td21 = document.createElement('td');tr2.appendChild(td21)
     var td22 = document.createElement('td');tr2.appendChild(td22)
+    //td22.classList.add("plot")
+    td22.style.verticalAlign="top"
+    td22.innerHTML='<p><button style="background-color:silver">Plot</button></p><div class="plot" hidden=true></div>'
+
+    //td22.width=500
     //td11.style.transform="rotate(270Deg)"
-    td12.style.textAlign="right"
-    td12.innerHTML=`<b style="color:green">${kj}</b>`
+    td11.style.textAlign="right"
+    td11.innerHTML=`<b style="color:green">${kj}</b>`
     // counts table
     var ctb = document.createElement('table')
-    td22.appendChild(ctb)
+    td21.appendChild(ctb)
     var tr0 = document.createElement('tr');ctb.appendChild(tr0) // top row
     var td00 = document.createElement('td');tr0.appendChild(td00) // upper left corner of the table
     td00.innerHTML=`<b style="color:navy">${ki}</b>`
@@ -127,6 +133,13 @@ brcaVarUI.tabulate=function(ki,kj){
         cts[UiInd[brcaVar.adf[ki][ind]]][UjInd[brcaVar.adf[kj][ind]]].push(ind)
     })
     Ui.forEach((ui,i)=>{ // then tabulate 
+        //tb.plt[ui]={} // dataframe row field
+        tb.traces[i]={
+            x:[],
+            y:[],
+            name:ui,
+            type:"bar"
+        }
         var tr = document.createElement('tr');ctb.appendChild(tr)
         var td = document.createElement('td');tr.appendChild(td) // ith label
         td.onmouseover=brcaVarUI.overRowLabel
@@ -134,9 +147,13 @@ brcaVarUI.tabulate=function(ki,kj){
         td.style.cursor="hand"
         td.innerHTML=`${ui}`
         td.style.color="navy"
-        Uj.forEach((ui,j)=>{
+        Uj.forEach((uj,j)=>{
             var td = document.createElement('td');tr.appendChild(td) // ith label
-            td.innerHTML=`<span class="sum">${cts[i][j].length}</span>/<span class="total" style="font-size:small">${cts[i][j].length}</span>`
+            var c = cts[i][j].length
+            //tb.plt[ui][uj]=c
+            tb.traces[i].x[j]=uj
+            tb.traces[i].y[j]=c
+            td.innerHTML=`<span class="sum">${c}</span>/<span class="total" style="font-size:small">${cts[i][j].length}</span>`
             td.style.textAlign="center"
             td.style.backgroundColor="silver"
             td.style.color="blue"
@@ -150,6 +167,8 @@ brcaVarUI.tabulate=function(ki,kj){
         })
     })
     brcaVarUI.ind=brcaVar.ind;
+    tb.classList.add("tabulateCounts")
+    Plotly.newPlot(tb.querySelector('.plot'),tb.traces,{barmode: 'stack'})
     return tb
 }
 brcaVarUI.selectCellCount=function(evt){
