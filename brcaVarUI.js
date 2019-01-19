@@ -101,7 +101,27 @@ brcaVarUI.tabulate=function(ki,kj){
     var td22 = document.createElement('td');tr2.appendChild(td22)
     //td22.classList.add("plot")
     td22.style.verticalAlign="top"
-    td22.innerHTML='<p><button style="background-color:silver">Plot</button></p><div class="plot" hidden=true></div>'
+    var bt = document.createElement('button')
+    bt.textContent="Plot"
+    //bt.style.backgroundColor="silver"
+    bt.classList.add("btn")
+    bt.classList.add("btn-primary")
+    td22.appendChild(bt)
+    var pltDiv=document.createElement('div')
+    pltDiv.classList.add('plot')
+    td22.appendChild(pltDiv)
+    pltDiv.hidden=true
+    bt.onclick=function(){
+        var divPlot = this.parentElement.querySelector('.plot')
+        if(divPlot.hidden){
+            divPlot.hidden=false
+            bt.textContent="hide Plot"
+        }else{
+            divPlot.hidden=true
+            bt.textContent="show Plot"
+        }
+    }
+    //td22.innerHTML='<p><button style="background-color:silver">Plot</button></p><div class="plot" hidden=true></div>'
 
     //td22.width=500
     //td11.style.transform="rotate(270Deg)"
@@ -230,7 +250,10 @@ brcaVarUI.recount=function(td){
                 sumSp.style.color=totalSp.style.color=td.style.color
             }
         }
-        //debugger
+        // update plotly traces
+        
+
+        debugger
     })
     
 }
