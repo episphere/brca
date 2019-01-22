@@ -175,7 +175,7 @@ brcaVarUI.tabulate=function(ki,kj){
             tb.traces[i].y[j]=c
             td.innerHTML=`<span class="sum">${c}</span>/<span class="total" style="font-size:small">${cts[i][j].length}</span>`
             td.style.textAlign="center"
-            td.style.backgroundColor="silver"
+            td.style.backgroundColor="white"
             td.style.color="blue"
             td.style.cursor="hand"
             td.onclick=brcaVarUI.selectCellCount
@@ -192,12 +192,13 @@ brcaVarUI.tabulate=function(ki,kj){
     return tb
 }
 brcaVarUI.selectCellCount=function(evt){
-    if(this.style.backgroundColor=="white"){
-        this.style.backgroundColor="silver"
+    //if(this.style.backgroundColor=="white"){
+    if(this.style.color=="silver"){
+        //this.style.backgroundColor="silver"
         this.style.color="blue"
         this.checkedOut=false
     }else{
-        this.style.backgroundColor="white"
+        //this.style.backgroundColor="white"
         this.style.color="silver"
         this.checkedOut=true
     }
@@ -220,6 +221,8 @@ brcaVarUI.recount=function(td){
     tds.forEach(td=>{
         var c=0
         td.varInd.forEach(i=>{c=c+brcaVarUI.ind[i]})
+        // update traces
+        td.parentElement.parentElement.parentElement.parentElement.parentElement.traces[td.cellIndex-1].y[td.parentElement.rowIndex-1]=c
         var sumSp = td.querySelector('.sum')
         if(sumSp.textContent!=c){
             td.style.border="solid"
@@ -237,7 +240,7 @@ brcaVarUI.recount=function(td){
             totalSp.style.color="blue"
         }
         
-        if(td.style.backgroundColor=="white"){
+        if(td.checkedOut){
             sumSp.style.color="silver" //"#0099ff" 
             totalSp.style.color="silver"
         }
@@ -246,14 +249,19 @@ brcaVarUI.recount=function(td){
             if(sumSp.style.color=="silver"){
                 sumSp.style.color=td.style.color 
                 totalSp.style.color=td.style.color
-            }else if(c==totalNum){
-                sumSp.style.color=totalSp.style.color=td.style.color
-            }
+                
+            }else{
+              if(c==totalNum){
+                  sumSp.style.color=totalSp.style.color=td.style.color
+              }else{
+                  sumSp.style.color="maroon"
+              }
+            } 
         }
         // update plotly traces
         
 
-        debugger
+        //debugger
     })
     
 }
